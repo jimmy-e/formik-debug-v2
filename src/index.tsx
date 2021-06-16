@@ -1,59 +1,47 @@
-import React from "react";
+import React, { ChangeEventHandler } from "react";
 import ReactDOM from "react-dom";
 import { Form, Formik, useFormikContext } from "formik";
-import { EuiButtonGroup } from "@elastic/eui";
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import "!style-loader!css-loader!sass-loader!./index.scss";
+import './index.css';
+
+interface Props {
+  isChecked: 'true' | 'false';
+  onChange: ChangeEventHandler<HTMLInputElement>;
+}
+
+const Switch: React.FC<Props> = ({ isChecked, onChange }) => (
+  <div style={{ margin: '8px' }}>
+    <label className="switch">
+      <input type="checkbox" checked={isChecked === 'true'} onChange={onChange}/>
+      <span className="slider round" />
+    </label>
+  </div>
+);
 
 const Content = () => {
   const { values, handleChange } = useFormikContext<any>();
-  const fieldNameOne = "a";
-  const fieldNameTwo = "b";
-  const fieldNameThree = "c";
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <EuiButtonGroup
-        id={fieldNameOne}
-        idSelected={values[fieldNameOne]}
-        legend=""
-        onChange={(value: any) => {
-          handleChange(fieldNameOne)(value);
-        }}
-        options={[
-          { id: "Yes", label: "Yes" },
-          { id: "No", label: "No" },
-        ]}
+      <Switch
+        isChecked={values.a}
+        onChange={() => handleChange('a')(values.a === 'true' ? 'false' : 'true')}
       />
-      <EuiButtonGroup
-        id={fieldNameTwo}
-        idSelected={values[fieldNameTwo]}
-        legend=""
-        onChange={(value: any) => {
-          handleChange(fieldNameTwo)(value);
-        }}
-        options={[
-          { id: "Yes", label: "Yes" },
-          { id: "No", label: "No" },
-        ]}
+      <Switch
+        isChecked={values.b}
+        onChange={() => handleChange('b')(values.b === 'true' ? 'false' : 'true')}
       />
-      <EuiButtonGroup
-        id={fieldNameThree}
-        idSelected={values[fieldNameThree]}
-        legend=""
-        onChange={(value: any) => {
-          handleChange(fieldNameThree)(value);
-        }}
-        options={[
-          { id: "Yes", label: "Yes" },
-          { id: "No", label: "No" },
-        ]}
+      <Switch
+        isChecked={values.c}
+        onChange={() => handleChange('c')(values.c === 'true' ? 'false' : 'true')}
       />
     </div>
   );
 };
 
 const App = () => (
-  <Formik initialValues={{ a: "", b: "", c: "" }} onSubmit={() => {}}>
+  <Formik initialValues={{ a: 'false', b: 'false', c: 'false' }} onSubmit={() => {}}>
     <Form>
       <Content />
     </Form>
